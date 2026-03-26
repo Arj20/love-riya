@@ -10,6 +10,17 @@ import photo6 from "../assets/images/photo-6.webp";
 import photo7 from "../assets/images/photo-7.webp";
 import photo8 from "../assets/images/photo-8.webp";
 import photo9 from "../assets/images/photo-9.webp";
+import photo10 from "../assets/images/photo-10.webp";
+import photo11 from "../assets/images/photo-11.webp";
+import photo12 from "../assets/images/photo-12.webp";
+import photo13 from "../assets/images/photo-13.webp";
+import photo14 from "../assets/images/photo-14.webp";
+import photo15 from "../assets/images/photo-15.webp";
+import photo16 from "../assets/images/photo-16.webp";
+import photo17 from "../assets/images/photo-17.webp";
+import photo18 from "../assets/images/photo-18.webp";
+import photo19 from "../assets/images/photo-19.webp";
+import photo20 from "../assets/images/photo-20.webp";
 
 const images = [
   photo1,
@@ -21,6 +32,17 @@ const images = [
   photo7,
   photo8,
   photo9,
+  photo10,
+  photo11,
+  photo12,
+  photo13,
+  photo14,
+  photo15,
+  photo16,
+  photo17,
+  photo18,
+  photo19,
+  photo20,
 ];
 
 export default function Slideshow({ next }) {
