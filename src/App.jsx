@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import backgroundMusic from "./assets/music/song.mp3";
@@ -10,6 +10,35 @@ import Final from "./components/Final";
 
 export default function App() {
   const [step, setStep] = useState(0);
+  const audioRef = useRef(null);
+  const hasPlayedRef = useRef(false);
+
+  useEffect(() => {
+    // Attempt to play audio only on Slideshow page (step 3)
+    if (step === 3 && audioRef.current && !hasPlayedRef.current) {
+      const playAudio = () => {
+        if (audioRef.current && !hasPlayedRef.current) {
+          audioRef.current.play().catch((err) => {
+            console.log("Audio play failed:", err);
+          });
+          hasPlayedRef.current = true;
+        }
+      };
+
+      // Try to play on first interaction on slideshow page
+      document.addEventListener("click", playAudio);
+      return () => document.removeEventListener("click", playAudio);
+    }
+  }, [step]);
+
+  // Keep audio playing even when changing pages
+  useEffect(() => {
+    if (audioRef.current && hasPlayedRef.current) {
+      audioRef.current.play().catch(() => {
+        // Silent catch - audio might already be playing
+      });
+    }
+  }, [step]);
 
   const renderStep = () => {
     switch (step) {
@@ -28,7 +57,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex items-center justify-center text-center px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
-      <audio autoPlay loop volume={0.3}>
+      <audio ref={audioRef} loop volume={0.3}>
         <source src={backgroundMusic} type="audio/mpeg" />
       </audio>
       <AnimatePresence mode="wait">

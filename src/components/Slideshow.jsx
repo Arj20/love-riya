@@ -25,45 +25,99 @@ const images = [
 
 export default function Slideshow({ next }) {
   const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
-    if (images.length === 0) {
-      setTimeout(next, 2000);
-      return;
+    // Preload images for smooth transitions
+    const preloadImages = async () => {
+      try {
+        const promises = images.map(
+          (image) =>
+            new Promise((resolve, reject) => {
+              const img = new Image();
+              img.onload = resolve;
+              img.onerror = reject;
+              img.src = image;
+            }),
+        );
+        await Promise.all(promises);
+        setImagesLoaded(true);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error preloading images:", err);
+        setLoading(false);
+      }
+    };
+
+    if (images.length > 0) {
+      preloadImages();
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!imagesLoaded || images.length === 0) {
+      const timer = setTimeout(() => {
+        next();
+      }, 2000);
+      return () => clearTimeout(timer);
     }
 
     const interval = setInterval(() => {
       setIndex((prev) => {
-        if (prev < images.length - 1) return prev + 1;
-        clearInterval(interval);
-        setTimeout(next, 2000);
-        return prev;
+        if (prev < images.length - 1) {
+          return prev + 1;
+        } else {
+          clearInterval(interval);
+          setTimeout(() => {
+            next();
+          }, 2000);
+          return prev;
+        }
       });
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [next]);
+  }, [imagesLoaded, next]);
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center">
+    <div className="w-full h-screen flex flex-col items-center justify-center px-4">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-pink-300 to-red-300 bg-clip-text text-transparent"
+        className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-pink-300 to-red-300 bg-clip-text text-transparent"
       >
         ✨ Our Moments ✨
       </motion.h2>
 
       <AnimatePresence mode="wait">
-        {images.length > 0 ? (
+        {loading ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center"
+          >
+            <div className="inline-block">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full"
+              />
+            </div>
+            <p className="text-pink-400 mt-4">Loading memories... 💫</p>
+          </motion.div>
+        ) : images.length > 0 ? (
           <motion.img
             key={index}
             src={images[index]}
-            className="max-h-[60vh] rounded-2xl shadow-2xl shadow-pink-500/30"
+            className="max-h-[50vh] sm:max-h-[60vh] rounded-2xl shadow-2xl shadow-pink-500/30 object-cover"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.8 }}
+            alt={`Memory ${index + 1}`}
           />
         ) : (
           <motion.div
@@ -71,10 +125,10 @@ export default function Slideshow({ next }) {
             animate={{ opacity: 1 }}
             className="text-center"
           >
-            <p className="text-2xl text-gray-400 mb-4">
+            <p className="text-xl sm:text-2xl text-gray-400 mb-4">
               (Your beautiful photos will go here! 📸)
             </p>
-            <p className="text-lg text-gray-500">
+            <p className="text-base sm:text-lg text-gray-500">
               Add images to the array to create a slideshow...
             </p>
           </motion.div>
@@ -82,8 +136,8 @@ export default function Slideshow({ next }) {
       </AnimatePresence>
 
       {/* Progress dots */}
-      {images.length > 0 && (
-        <div className="flex gap-2 mt-12">
+      {images.length > 0 && !loading && (
+        <div className="flex gap-2 mt-8 sm:mt-12 flex-wrap justify-center">
           {images.map((_, i) => (
             <motion.div
               key={i}
