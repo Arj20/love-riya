@@ -37,7 +37,7 @@ export default function Interaction({ next }) {
         </motion.h2>
 
         <p className="text-lg text-gray-300 mb-12">
-          (be careful with your answer 👀)
+          (Be careful with your answer 👀)
         </p>
 
         <div className="flex gap-6 justify-center flex-wrap relative">
@@ -51,7 +51,7 @@ export default function Interaction({ next }) {
             YES 😍
           </motion.button>
 
-          {/* NO Button - Runs Away */}
+          {/* NO Button - Runs Away on hover/touch */}
           <motion.button
             animate={{
               x: pos.x,
@@ -63,7 +63,8 @@ export default function Interaction({ next }) {
               mass: 0.5,
             }}
             onMouseEnter={move}
-            className="border-2 border-red-500 text-red-400 px-10 py-4 rounded-full font-bold text-xl hover:border-red-400 transition-colors"
+            onTouchStart={move}
+            className="border-2 border-red-500 text-red-400 px-10 py-4 rounded-full font-bold text-xl hover:border-red-400 transition-colors active:border-red-300"
           >
             NO 😏
           </motion.button>

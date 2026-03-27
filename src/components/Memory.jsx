@@ -2,10 +2,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const memories = [
-  "life was going good before i met you, it became great after you.",
-  "I like having tea with you in my evening, that is my comfort zone, but it's you that is comfort.",
-  "i have been wrong for most of my life but you are my best decision.",
-  "thank you for making everyday of my life so special!!",
+  "Life was going well before I met you, but it became wonderful after you came into it.",
+  "I love having tea with you in the evenings. That's my comfort zone, but, you are my comfort.",
+  "I've been wrong about many things in life, but you are my best decision.",
+  "Thank you for making every day of my life so special!",
 ];
 
 export default function Memory({ next }) {
