@@ -130,7 +130,7 @@ export default function Slideshow({ next }) {
   }, [imagesLoaded, next]);
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center px-4 py-8">
+    <div className="h-screen flex flex-col items-center justify-center px-4 py-8">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -140,12 +140,9 @@ export default function Slideshow({ next }) {
       </motion.h2>
 
       {/* Container with fixed space to prevent layout shift */}
-      <div className="w-full flex flex-col items-center">
+      <div className="flex flex-col items-center">
         {/* Image container with fixed height to maintain consistent size */}
-        <div
-          className="w-full max-w-2xl h-[50vh] sm:h-[60vh] md:h-[65vh] relative overflow-hidden flex items-center justify-center"
-          style={{ borderRadius: "32px" }}
-        >
+        <div className="h-[50vh] sm:h-[60vh] md:h-[65vh] relative overflow-hidden flex items-center justify-center rounded-3xl shadow-lg shadow-pink-500/30">
           <AnimatePresence mode="wait">
             {loading ? (
               <motion.div
