@@ -141,8 +141,11 @@ export default function Slideshow({ next }) {
 
       {/* Container with fixed space to prevent layout shift */}
       <div className="flex flex-col items-center">
-        {/* Image container with fixed height to maintain consistent size */}
-        <div className="h-[50vh] sm:h-[60vh] md:h-[65vh] relative overflow-hidden flex items-center justify-center rounded-3xl shadow-lg shadow-pink-500/30">
+        {/* Image container - height matches image naturally */}
+        <div
+          className="relative overflow-hidden rounded-3xl shadow-lg shadow-pink-500/30"
+          style={{ maxWidth: "500px", width: "100%", maxHeight: "70vh" }}
+        >
           <AnimatePresence mode="wait">
             {loading ? (
               <motion.div
@@ -151,7 +154,11 @@ export default function Slideshow({ next }) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-900 to-black"
-                style={{ borderRadius: "32px !important" }}
+                style={{
+                  borderRadius: "32px !important",
+                  width: "100%",
+                  height: "100%",
+                }}
               >
                 <div className="text-center">
                   <div className="inline-block">
@@ -170,12 +177,12 @@ export default function Slideshow({ next }) {
               </motion.div>
             ) : images.length > 0 ? (
               <>
-                {/* Actual image - use object-contain to show full image */}
+                {/* Actual image - natural height */}
                 <motion.img
                   key={`image-${index}`}
                   src={images[index]}
-                  className="w-full h-full shadow-2xl shadow-pink-500/30 object-contain"
-                  style={{ borderRadius: "32px" }}
+                  className="w-full shadow-2xl shadow-pink-500/30 object-contain"
+                  style={{ borderRadius: "32px", display: "block" }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
